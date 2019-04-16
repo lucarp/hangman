@@ -11,7 +11,11 @@ public class FinJeuBehaviour extends OneShotBehaviour {
 	}
 	
 	public void action() {
-		System.out.println(agent.getAID().getLocalName() + " : Fin du jeu après " + agent.getNbEssais() +" essai(s)");
+		if(agent.getLostMatch()) {
+			System.out.println(agent.getAID().getLocalName() + " : Game over! I've lost. :(");
+		} else {
+			System.out.println(agent.getAID().getLocalName() + " : Game over! I've won! \\o/");
+		}
 		agent.doDelete();
 	}
 

@@ -37,23 +37,28 @@ public class AgentA extends Agent {
 		behaviour.registerDefaultTransition(BEHAVIOUR_INITIALISATION, BEHAVIOUR_JEU);
 		behaviour.registerTransition(BEHAVIOUR_JEU, BEHAVIOUR_JEU, 1);
 		behaviour.registerTransition(BEHAVIOUR_JEU, BEHAVIOUR_FIN, 0);
+		behaviour.registerTransition(BEHAVIOUR_JEU, BEHAVIOUR_FIN, 2);
 		
 		addBehaviour(behaviour);
 		
 	}
 	
-	public void initialiserNombreCache(){
-		nombreCache = borneInf + (int)(Math.random()*(borneSup - borneInf + 1));
-		System.out.println(getLocalName() + " : Nombre cach� = " + nombreCache);
+	public void initialiserMotCache(){
 		motCache = "lucas";
 		missingLetters = "lucas";
+		this.setNbEssais(2 * motCache.length());
 		System.out.println(getLocalName() + " : Mot cache = " + motCache);
 	}
 	
 	public int essai(int essai){ //, String finalGuess
 		String letter = String.valueOf((char) essai);
+		
+		if(missingLetters.length()>0 && nbEssais < 0) {
+			//RETURN GANHOU JOGO!
+			return -2;
+		}
+		
 		if (alphabet.contains(letter)) {
-			nbEssais++;
 			alphabet = alphabet.replace(letter, "");
 			System.out.println("Alphabet = " + alphabet);
 			if (missingLetters.contains(letter)) {
@@ -69,6 +74,7 @@ public class AgentA extends Agent {
 				}
 			} else {
 				// PALAVAR NAO TEM LETRA! PENALIZADO
+				nbEssais--;
 				System.out.println(getLocalName() + " : " + motCache + " does not contain letter " + letter);
 				return -1;
 			}
@@ -94,8 +100,8 @@ public class AgentA extends Agent {
 		return this.motCache.length();
 	}
 
-	public void setBorneSup(int borneSup) {
-		this.borneSup = borneSup;
+	public int getMissingLetters() {
+		return this.missingLetters.length();
 	}
 
 	public int getBorneInf() {
@@ -107,10 +113,7 @@ public class AgentA extends Agent {
 	}
 
 	public void initialiserJeu() {
-		this.setNbEssais(0);
-		this.setBorneInf(97);
-		this.setBorneSup(122);
-		this.initialiserNombreCache();
+		this.initialiserMotCache();
 		
 	}
 }

@@ -35,6 +35,8 @@ public class JeuBehaviour extends OneShotBehaviour {
 					agent.addIncorrectGuess(essai);
 				} else if (resultat == 1) {
 					agent.addCorrectGuess(essai);
+				} else if (resultat == -2) {
+					agent.setLostMatch();
 				}
 				
 				retour = Math.abs(resultat);

@@ -24,6 +24,7 @@ public class AgentB extends Agent {
 	private String correctGuesses = "";
 	private String incorrectGuesses = "";
 	private int letterCount;
+	private Boolean lostMatch = false;
 	
 	public void setup(){
 		FSMBehaviour behaviour = new FSMBehaviour(this);
@@ -39,12 +40,12 @@ public class AgentB extends Agent {
 		behaviour.registerDefaultTransition(BEHAVIOUR_INITIALISATION, BEHAVIOUR_JEU);
 		behaviour.registerTransition(BEHAVIOUR_JEU, BEHAVIOUR_JEU, 1);
 		behaviour.registerTransition(BEHAVIOUR_JEU, BEHAVIOUR_FIN, 0);
+		behaviour.registerTransition(BEHAVIOUR_JEU, BEHAVIOUR_FIN, 2);
 		
 		addBehaviour(behaviour);
 	}
 	
 	public int jouer(){
-		nbEssais ++;
 		Random random = new Random();
 		int index = random.nextInt(alphabet.length());
 		int guess = (int) alphabet.charAt(index);
@@ -62,18 +63,31 @@ public class AgentB extends Agent {
 	public void setNbEssais(int nbEssais) {
 		this.nbEssais = nbEssais;
 	}
+	
+	public void setLostMatch() {
+		this.lostMatch = true;
+	}
+	
+	public Boolean getLostMatch() {
+		return this.lostMatch;
+	}
 
 
 	public void setLetterCount(int letterCount) {
 		this.letterCount = letterCount;
+		this.setNbEssais(2 * letterCount);
+		System.out.println(getLocalName() + " : Acknowlegement: Letter count = " + letterCount);
 	}
 	
 	public void addCorrectGuess(int letter) {
 		this.correctGuesses += (char) letter;
+		System.out.println(getLocalName() + " : Acknowlegement: Added correct guess = " + (char) letter);
 	}
 	
 	public void addIncorrectGuess(int letter) {
 		this.incorrectGuesses += (char) letter;
+		this.nbEssais --;
+		System.out.println(getLocalName() + " : Acknowlegement: Added incorrect guess = " + (char) letter);
 	}
 	
 }

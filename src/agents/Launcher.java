@@ -10,7 +10,7 @@ import jade.wrapper.StaleProxyException;
 public class Launcher {
 	public static void main(String[] args) {
 		Runtime runtime = Runtime.instance();
-		Profile config = new ProfileImpl("localhost", 8887, null);
+		Profile config = new ProfileImpl("localhost", 8888, null);
 		config.setParameter("gui", "true");
 		AgentContainer mc = runtime.createMainContainer(config);
 		AgentController ac1;
@@ -21,6 +21,7 @@ public class Launcher {
 			ac1.start();
 			ac2.start();
 		} catch (StaleProxyException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }
